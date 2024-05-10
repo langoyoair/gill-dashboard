@@ -33,8 +33,8 @@ st.set_page_config(layout="wide")
 
 
 
-nltk.download('stopwords')
-nltk.download('wordnet')
+# nltk.download('stopwords')
+# nltk.download('wordnet')
 
 
 
