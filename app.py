@@ -33,12 +33,6 @@ st.set_page_config(layout="wide")
 
 
 
-nltk.download('stopwords')
-nltk.download('wordnet')
-
-
-
-
 
 
 @st.cache_data()
@@ -302,7 +296,7 @@ if __name__ == '__main__':
     toc.h1("Reddit analysis")
     st.write("This is an analysis on equality and gender based subreddits. Reddit is nowadays a well known platform for discussions. As a consequence there are plenty of conversations on gender topics. Reddit’s advantage is that the platform is subdivided into self-organized forums called “subreddits”. Each of these communities is normally dedicated to the discussion of one topic or one view of said topic. In addition, its voting feature allows querying each community in order to identify which are the posts that have more popularity and visibility. These features permit an extraction based on selected communities and a rapid access to the most popular opinions.")
     toc.h2("Datasets")
-    st.write("These are the datasets involved in this study. Extracted using reddit API.")
+    st.write("These are the datasets involved in this study. Extracted using [reddit API](https://old.reddit.com/dev/api/).")
     toc.h3("Communities")
     st.write("These are the communities involve in this study with their descriptions. Several subreddits were selected in order to percieve different views on gender and equality: from the most adanvced and supportive groups to some of them including hate speech.")
     st.dataframe(communities[['Name', 'Description', 'Source', "Members (April 24)"]])
@@ -413,9 +407,12 @@ if __name__ == '__main__':
 
 
     toc.h3("Posts by subreddit")
+    st.write("This graph shows the amount of posts collected from each of the subreddits selected. The target was to collect the top 1000 posts. For some of them there are fewer.")
     plot_category_counts(posts)
 
     toc.h3("Comments by subreddit")
+    st.write("Here we also have the distribution of comments collected from each of the subreddits. LGBT sub is one of the most populated and this is why there are more discussions.")
+
     plot_category_counts(comments)
 
     ## SIDEBAR WIDGETS
@@ -424,7 +421,12 @@ if __name__ == '__main__':
     n = int( np.floor(st.sidebar.number_input('Insert what type of n-grams to analyze', value = 3, step=1, min_value=1, max_value=6)))
 
 
-    toc.h2("Sentiments comparison subreddit")
+    toc.h2("Subreddits's sentiments comparison")
+    st.write("Sentiment analysis is a process of computationally determining the emotional tone behind a piece of text. It involves analyzing the language used in a sentence, paragraph, or document to understand whether the expressed sentiment is positive, negative, or neutral. This analysis is commonly used in social media monitoring, customer feedback analysis, and market research to gauge public opinion, understand customer satisfaction, or track brand perception.")
+    st.write("""Here a sentiment analysis model was applied to the collected posts and comments.
+             This model assigns probabilities to each given text of being:\n- Positive, negative or neutral\n- Hate speech detection (hatefulness, aggressiveness)\n- Emotions: joy, sadness, surprise, disgust, fear, anger, other \n
+             """)
+    st.write("In the folowing graphs we can see the average probarbilities given to each subreddit:")
     toc.h3("Posts")
     plot_sentiments(posts)
     toc.h3("Comments")
@@ -432,6 +434,7 @@ if __name__ == '__main__':
 
     ## PUBLICATION HISTORY
     toc.h2("Publication History")
+    st.write(f"This section shows the frequency of posts and comments publication of the subreddit **{selected_category}**")
     toc.h3("Posts {} ".format(selected_category))
     plot_history(posts_date_agg, selected_category)
     toc.h3("Comments {} ".format(selected_category))
@@ -440,21 +443,27 @@ if __name__ == '__main__':
     fig.suptitle('Posts Aggregated by Category and Date', fontsize=16)
 
     title = "Top Comments: {} ".format(selected_category) 
+    st.write(f"The following table contain the top comments of **{selected_category}**. This can give us a way to see which types of messages are posted in the sub and which of them are more valued. Note: Hover over the table to perform a keyword search.")
     toc.h2(title)
     print_top_comments(selected_category)
 
     toc.h2("Top N-grams")
+    st.write("Topic analysis, also known as topic modeling, is a technique used in natural language processing to identify the main themes or topics present in a collection of documents. It involves algorithms that analyze the words and phrases within the documents to automatically uncover common themes or topics. These topics are represented as sets of words that frequently co-occur together within the documents.")
+    st.write("N-grams are a way to implement topic analysis. An n-gram is a sequence of n words and one way of identifying popular topics is listing the ones are more repeated.")
+    st.write(f"These are the frequencies for the **top {k} {n}-grams for {selected_category}**:")
     toc.h3("Posts {} ".format(selected_category))
     top_k_ngrams(posts[posts['category']==selected_category], K=k, N_1=n, N_2=n)
 
-    toc.h3("Comments ".format(selected_category))
+    toc.h3("Comments {}".format(selected_category))
     top_k_ngrams(comments[comments['category']==selected_category], K=k, N_1=n, N_2=n)
 
     toc.h2("Wordclouds")
+    st.write("Wordclouds are a very popular representation to show the most repeated n-grams. All the sequences are displayed together and the larger they appear, the more frequent they are.")
+    st.write(f"These are the wordclouds for the **top {k} {n}-grams for {selected_category}**:")
     toc.h3("Posts {} ".format(selected_category))
     ngram_wordcloud(posts[posts['category']==selected_category], K=k, N_1=n, N_2=n)
 
-    toc.h3("Comments ".format(selected_category))
+    toc.h3("Comments {}".format(selected_category))
     ngram_wordcloud(comments[comments['category']==selected_category], K=k, N_1=n, N_2=n)
     toc.toc()
 
