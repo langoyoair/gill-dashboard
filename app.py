@@ -33,8 +33,8 @@ st.set_page_config(layout="wide")
 
 
 
-# nltk.download('stopwords')
-# nltk.download('wordnet')
+nltk.download('stopwords')
+nltk.download('wordnet')
 
 
 
@@ -431,11 +431,10 @@ if __name__ == '__main__':
     plot_sentiments(comments)
 
     ## PUBLICATION HISTORY
-    title ="Publication History: {} ".format(selected_category) 
-    toc.h2(title)
-    toc.h3("Posts")
+    toc.h2("Publication History")
+    toc.h3("Posts {} ".format(selected_category))
     plot_history(posts_date_agg, selected_category)
-    toc.h3("Comments")
+    toc.h3("Comments {} ".format(selected_category))
     plot_history(comments_date_agg, selected_category)
     fig, axes = plt.subplots(nrows=len(categories), ncols=1, figsize=(20, 100))
     fig.suptitle('Posts Aggregated by Category and Date', fontsize=16)
@@ -444,20 +443,18 @@ if __name__ == '__main__':
     toc.h2(title)
     print_top_comments(selected_category)
 
-    title = "Top N-grams: {} ".format(selected_category)
-    toc.h2(title)
-    toc.h3("Posts")
+    toc.h2("Top N-grams")
+    toc.h3("Posts {} ".format(selected_category))
     top_k_ngrams(posts[posts['category']==selected_category], K=k, N_1=n, N_2=n)
 
-    toc.h3("Comments")
+    toc.h3("Comments ".format(selected_category))
     top_k_ngrams(comments[comments['category']==selected_category], K=k, N_1=n, N_2=n)
 
-    title = "Wordclouds: {} ".format(selected_category)
-    toc.h2(title)
-    toc.h3("Posts")
+    toc.h2("Wordclouds")
+    toc.h3("Posts {} ".format(selected_category))
     ngram_wordcloud(posts[posts['category']==selected_category], K=k, N_1=n, N_2=n)
 
-    toc.h3("Comments ")
+    toc.h3("Comments ".format(selected_category))
     ngram_wordcloud(comments[comments['category']==selected_category], K=k, N_1=n, N_2=n)
     toc.toc()
 
