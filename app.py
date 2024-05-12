@@ -49,6 +49,7 @@ def load_datasets():
 def plot_history(df,category='lgbt'):
     new_index =  df.loc[category].index.map(lambda x: '-'.join(map(str, x)))
     fig = go.Figure([go.Bar(x=new_index, y=df.loc[category]['score'])])
+    fig.update_layout(height=1000, width=1000)
     st.plotly_chart(fig)
 
 
@@ -186,7 +187,7 @@ def top_k_ngrams(df, K=50, N_1=1, N_2=1):
 
     # Create figure
     fig = go.Figure(data=[trace], layout=layout, )
-    fig.update_layout(height=500, width=500)
+    fig.update_layout(height=1000, width=1000)
 
     # Show figure
     st.plotly_chart(fig)
@@ -296,7 +297,7 @@ if __name__ == '__main__':
     toc.h1("Reddit analysis")
     st.write("This is an analysis on equality and gender based subreddits. Reddit is nowadays a well known platform for discussions. As a consequence there are plenty of conversations on gender topics. Reddit’s advantage is that the platform is subdivided into self-organized forums called “subreddits”. Each of these communities is normally dedicated to the discussion of one topic or one view of said topic. In addition, its voting feature allows querying each community in order to identify which are the posts that have more popularity and visibility. These features permit an extraction based on selected communities and a rapid access to the most popular opinions.")
     toc.h2("Datasets")
-    st.write("These are the datasets involved in this study. Extracted using [reddit API](https://old.reddit.com/dev/api/).")
+    st.write("These are the datasets involved in this study. Extracted using [Reddit API](https://old.reddit.com/dev/api/).")
     toc.h3("Communities")
     st.write("These are the communities involve in this study with their descriptions. Several subreddits were selected in order to percieve different views on gender and equality: from the most adanvced and supportive groups to some of them including hate speech.")
     st.dataframe(communities[['Name', 'Description', 'Source', "Members (April 24)"]])
@@ -323,7 +324,7 @@ if __name__ == '__main__':
     st.write("Here the number of members in each subreddit can be appreciated. The number of members were recorded on April 2024 although the extractions were finished earlier. Note that \"antifeminists\" is now banned so it displays 0 but its data was extracted when it still was public. LGBT is clearly the most popular subreddit. Closely follow Feminism, AskFeminsts, NonBinary, trans or gay. MensRIghts and MensLibe also seem popular. Other subreddits are less populated.")
 
     members = communities[['Name', 'Members (April 24)']]
-    fig = px.bar(members, x='Members (April 24)', y='Name', title='Memebers per community', text='Members (April 24)'  , color='Name',color_continuous_scale=px.colors.sequential.Inferno,  height=500, width= 500)
+    fig = px.bar(members, x='Members (April 24)', y='Name', title='Memebers per community', text='Members (April 24)'  , color='Name',color_continuous_scale=px.colors.sequential.Inferno,  height=750, width= 750)
     st.plotly_chart(fig)
 
     
@@ -439,8 +440,7 @@ if __name__ == '__main__':
     plot_history(posts_date_agg, selected_category)
     toc.h3("Comments {} ".format(selected_category))
     plot_history(comments_date_agg, selected_category)
-    fig, axes = plt.subplots(nrows=len(categories), ncols=1, figsize=(20, 100))
-    fig.suptitle('Posts Aggregated by Category and Date', fontsize=16)
+
 
     title = "Top Comments: {} ".format(selected_category) 
     st.write(f"The following table contain the top comments of **{selected_category}**. This can give us a way to see which types of messages are posted in the sub and which of them are more valued. Note: Hover over the table to perform a keyword search.")
